@@ -1,6 +1,8 @@
 package first.webapp;
 
 import java.io.IOException;
+import java.io.PrintWriter;
+
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
@@ -114,12 +116,17 @@ public class UserServlet extends HttpServlet {
 	throws SQLException, IOException, ServletException 
 	{
 		List < User > users = new ArrayList < > ();
-		 
+		
+	    //code to display text as response
+ 	    response.setContentType("text/html");
+        PrintWriter out = response.getWriter();
+		
         try (Connection connection = getConnection();
 
                 // Step 2:Create a statement using connection object
                 PreparedStatement preparedStatement = connection.prepareStatement(SELECT_ALL_USERS);) {
-                System.out.println(preparedStatement);
+                //System.out.println(preparedStatement);
+        	        	
                 // Step 3: Execute the query or update query
                 ResultSet rs = preparedStatement.executeQuery();
 
@@ -137,7 +144,9 @@ public class UserServlet extends HttpServlet {
             }
 		//List < User > listUser = databaseOperations.selectAllUsers();
         
-		System.out.println("total user is: " + users.size());
+		//System.out.println("total user is: " + users.size());
+        out.print("All Users Listed Successfully... <button onclick=\"window.location.href='http://localhost:8089/lesson14/userManagement.jsp';\"> Click to go to user registration </button>" ); //print out this message as response
+				
 		request.setAttribute("listUser", users);
 		request.getRequestDispatcher("/userManagement.jsp").forward(request, response);
 		
@@ -199,7 +208,11 @@ public class UserServlet extends HttpServlet {
 	//method to update the user data
 	private void updateUser(HttpServletRequest request, HttpServletResponse response)
 	throws SQLException, IOException {
-		System.out.println("comes to updateUser");
+		//System.out.println("comes to updateUser");
+		
+		//code to display text as response
+	 	response.setContentType("text/html");
+        PrintWriter out = response.getWriter();
 		
 		//get values from the request
 		String oriName = request.getParameter("oriName");
@@ -208,10 +221,10 @@ public class UserServlet extends HttpServlet {
         String email = request.getParameter("email");
         String language = request.getParameter("language");
         
-        System.out.println(name);
-        System.out.println(password);
-        System.out.println(email);
-        System.out.println(language);
+        //System.out.println(name);
+        //System.out.println(password);
+        //System.out.println(email);
+        //System.out.println(language);
         
         //database operation
         try (Connection connection = getConnection(); PreparedStatement statement = connection.prepareStatement(UPDATE_USERS_SQL);) {
@@ -222,25 +235,36 @@ public class UserServlet extends HttpServlet {
             statement.setString(5, oriName);
 
             int i = statement.executeUpdate();
+            if (i > 0)
+                out.print("User Updated Successfully... <button onclick=\"window.location.href='http://localhost:8089/lesson14/userManagement.jsp';\"> Click to go to user registration </button>" ); //print out this message as response
+            
         }
         
         //redirect us back to UserServlet !note: do change the url to your project name
-        response.sendRedirect("http://localhost:8085//lesson14/UserServlet");
+        response.sendRedirect("http://localhost:8089//lesson14/UserServlet");
 	}
 
 	//method to delete user
 	private void deleteUser(HttpServletRequest request, HttpServletResponse response)
 	throws SQLException, IOException {
-		System.out.println("comes to deleteUser");
+		//System.out.println("comes to deleteUser");
+		
+		//code to display text as response
+	 	response.setContentType("text/html");
+        PrintWriter out = response.getWriter();
+		
         String name = request.getParameter("name");
 
         try (Connection connection = getConnection(); PreparedStatement statement = connection.prepareStatement(DELETE_USERS_SQL);) {
             statement.setString(1, name);
             int i = statement.executeUpdate();
+            
+            if (i > 0)
+                out.print("User Deleted Successfully... <button onclick=\"window.location.href='http://localhost:8089/lesson14/userManagement.jsp';\"> Click to go to user registration </button>" ); //print out this message as response
         }
         
         //redirect us back to UserServlet !note: do change the url to your project name
-        response.sendRedirect("http://localhost:8085//lesson14/UserServlet");
+        response.sendRedirect("http://localhost:8089//lesson14/UserServlet");
 	}
 	
     private void printSQLException(SQLException ex) {
