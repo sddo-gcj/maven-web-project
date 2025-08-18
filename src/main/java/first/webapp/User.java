@@ -7,7 +7,6 @@ public class User {
     protected String language;
 
     public User() {}
-
     
     public User(String name, String password, String email, String language) {
         super();
@@ -16,7 +15,6 @@ public class User {
         this.email = email;
         this.language = language;
     }
-
 
     public String getName() {
         return name;

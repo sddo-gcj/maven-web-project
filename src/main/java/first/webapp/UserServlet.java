@@ -249,18 +249,14 @@ public class UserServlet extends HttpServlet {
 	throws SQLException, IOException {
 		//System.out.println("comes to deleteUser");
 		
-		//code to display text as response
-	 	response.setContentType("text/html");
-        PrintWriter out = response.getWriter();
-		
         String name = request.getParameter("name");
 
         try (Connection connection = getConnection(); PreparedStatement statement = connection.prepareStatement(DELETE_USERS_SQL);) {
             statement.setString(1, name);
             int i = statement.executeUpdate();
             
-            if (i > 0)
-                out.print("User Deleted Successfully... <button onclick=\"window.location.href='http://localhost:8089/lesson14/userManagement.jsp';\"> Click to go to user registration </button>" ); //print out this message as response
+ //           if (i > 0)
+ //               out.print("User Deleted Successfully... <button onclick=\"window.location.href='http://localhost:8089/lesson14/userManagement.jsp';\"> Click to go to user registration </button>" ); //print out this message as response
         }
         
         //redirect us back to UserServlet !note: do change the url to your project name
